@@ -20,5 +20,13 @@ int main(int argn, char *argv[]) {
         system("sudo mv data.tar.xz /");
         system("sudo tar xpf /data.tar.xz");
     }
-        return 0;
+    else {
+        printf("Unknown option: %s\n", argv[1]);
+        printf("Usage: gentoodeb [OPTIONS]\n");
+        printf("\n\t-h, --help\t\tPrint this help message\n");
+        printf("\t-i, --install [FILE]\tInstall the [FILE] packet\n\n");
+        printf("Example:\n");
+        printf("\tgentoodeb -i google-chrome-stable*.deb\tInstall the google-chrome-stable*.deb packet.\n");
+    }
+    return 0;
 }
