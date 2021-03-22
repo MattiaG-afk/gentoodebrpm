@@ -3,7 +3,7 @@ CFLAGS=-I.
 SRC=$(wildcard gentoodeb.c)
 OBJ=$(SRC:.c=.o)
 
-PREFIX=/usr/bin
+PREFIX=/bin
 
 %.o: %.c
 	$(CC) -c -o $@ $< $(CFLAGS)
