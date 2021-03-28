@@ -1,5 +1,5 @@
- gentoodeb: gentoodeb.c
-     gcc -O3 -march=native gentoodeb.c -o /bin/gentoodeb
+ gentoodebrpm: gentoodebrpm.c
+     gcc -O3 -march=native gentoodebrpm.c -o /bin/gentoodebrpm
  
- install: gentoodeb
-     sudo mv gentoodeb /bin/gentoodeb
+ install: gentoodebrpm
+     sudo mv gentoodebrpm /bin/gentoodebrpm
