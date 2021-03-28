@@ -5,5 +5,5 @@ You can install this progam by running:
 ```shell
 git clone https://github.com/MattiaG-afk/gentoodeb.git
 cd gentoodeb
-sudo make && sudo make install
+sudo make
 ```
