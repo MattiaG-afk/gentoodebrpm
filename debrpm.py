@@ -6,7 +6,7 @@ import getopt
 import requests
 
 if not len(sys.argv[1:]) or sys.argv[1] == '-h' or sys.argv[1] == '--help':
-    print("Usage: debrpm [OPTIONS] [FILE]\n")
+    print("\033[1;31mUsage\033[0m\n: debrpm [OPTIONS] [FILE]\n")
     print("OPTIONS:")
     print("-h, --help\t\tShow this help message")
     print("-i, --install\t\tInstall a packet from the remote repository")
