@@ -1,3 +1,6 @@
-debrpm: debrpm.c
-	gcc -O3 -march=native debrpm.c -o /usr/bin/debrpm
-	mkdir /var/log/debrpm
+debrpm: debrpm.py
+	mkdir -p /var/log/debrpm
+	mkdir -p /var/db/repos/debrpm
+	chmod +x debrpm.py
+	mv debrpm.py /usr/bin/debrpm
+	debrpm -u
