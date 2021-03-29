@@ -1,3 +1,3 @@
-gentoodebrpm: gentoodebrpm.c
-	gcc -O3 -march=native gentoodebrpm.c -o /usr/bin/gentoodebrpm
-	mkdir /var/log/gentoodebrpm
+debrpm: debrpm.c
+	gcc -O3 -march=native debrpm.c -o /usr/bin/debrpm
+	mkdir /var/log/debrpm
