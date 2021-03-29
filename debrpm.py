@@ -23,7 +23,8 @@ else:
             subprocess.run(command, shell=True)
             subprocess.run("sudo rm debian-binary control.tar.xz", shell=True)
             subprocess.run("sudo mv data.tar.xz /", shell=True)
-            command = "sudo tar xpvf /data.tar.xz >> /var/log/debrpm/" + file + ".log"
+            subprocess.run("cd /", shell=True)
+            command = "sudo tar xpvf data.tar.xz >> /var/log/debrpm/" + file + ".log"
             subprocess.run(command, shell=True)
             subprocess.run("rm /data.tar.xz", shell=True)
         elif file.find('.rpm') != -1:
@@ -33,8 +34,9 @@ else:
             command = "rm " + file
             subprocess.run(command, shell=True)
             command = "mv " + file.replace(".rpm", ".tar.xz") + " /"
-            subprocess.run(command, shell=True);
-            command = "sudo tar xpvf /" + file.replace(".rpm", ".tar.xz") + " >> /var/log/debrpm/" + file + ".log"
+            subprocess.run(command, shell=True)
+            subprocess.run("cd /", shell=True)
+            command = "sudo tar xpvf " + file.replace(".rpm", ".tar.xz") + " >> /var/log/debrpm/" + file + ".log"
             subprocess.run(command, shell=True)
             command= "rm /" + file.replace(".rpm", ".tar.xz")
             subprocess.run(command, shell=True)
