@@ -23,10 +23,10 @@ else:
             subprocess.run(command, shell=True)
             subprocess.run("sudo rm debian-binary control.tar.xz", shell=True)
             subprocess.run("sudo mv data.tar.xz /", shell=True)
-            subprocess.run("cd /", shell=True)
+            os.chdir("/")
             command = "sudo tar xpvf data.tar.xz >> /var/log/debrpm/" + file + ".log"
             subprocess.run(command, shell=True)
-            subprocess.run("rm /data.tar.xz", shell=True)
+            subprocess.run("sudo rm data.tar.xz", shell=True)
         elif file.find('.rpm') != -1:
             print("Installing the file: ", file)
             command = "rpm2tarxz " + file
@@ -35,10 +35,10 @@ else:
             subprocess.run(command, shell=True)
             command = "mv " + file.replace(".rpm", ".tar.xz") + " /"
             subprocess.run(command, shell=True)
-            subprocess.run("cd /", shell=True)
+            os.chdir("/")
             command = "sudo tar xpvf " + file.replace(".rpm", ".tar.xz") + " >> /var/log/debrpm/" + file + ".log"
             subprocess.run(command, shell=True)
-            command= "rm /" + file.replace(".rpm", ".tar.xz")
+            command= "sudo rm " + file.replace(".rpm", ".tar.xz")
             subprocess.run(command, shell=True)
         else:
             print("Unknown file. Currently supported files are: .deb and .rpm")
