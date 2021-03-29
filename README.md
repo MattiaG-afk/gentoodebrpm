@@ -1,5 +1,5 @@
-# GENTOODEB
-An easy to use installer for .deb packet on gentoo
+# DEBRPM
+An easy to use installer for .deb and .rpm packet on Gentoo, Slackware and other distros.
 ## Installation
 You can install this progam by running:
 ```shell
