@@ -44,16 +44,21 @@ else:
         else:
             print("Unknown file. Currently supported files are: .deb and .rpm")
     if sys.argv[1] == '-s' or sys.argv[1] == '--search':
+        notfind = 1
+        print("Search results:")
         file = open('/var/db/repos/debrpm/packages.txt', 'r')
-        find = 0
         packets = file.readlines()
         for packet in packets:
-            if(packet.find(sys.argv[2])) != -1:
-                find = find + 1
-        if find != 0:
-            print("Found " + str(find) + " matches")
-        else:
-            print("The package is not in the repository")
+            if packet.find(sys.argv[2]) != -1:
+                notfind = 0
+                packet_name = packet[0:packet.find('[')]
+                packet_description = packet[(packet.find('[')+1):packet.find(']')]
+                packet_url = packet[(packet.find('(')+1):packet.find(')')]
+                print("Packet:", packet_name)
+                print("Description:", packet_description)
+                print("URL:", packet_url)
+        if notfind:
+            print("The packet is not in the repository")
     if sys.argv[1] == '-u' or sys.argv[1] == '--update':
         print("Updating the /var/db/repos/debrpm/packages.txt file...")
         r = requests.get('https://raw.githubusercontent.com/MattiaG-afk/debrpm-repo/main/packages.txt', allow_redirects=True)
