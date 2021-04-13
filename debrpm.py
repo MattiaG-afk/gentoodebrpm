@@ -9,59 +9,11 @@ if not len(sys.argv[1:]) or sys.argv[1] == '-h' or sys.argv[1] == '--help':
     print("\033[1;31mUsage\033[0m: debrpm [OPTIONS] [FILE]\n")
     print("OPTIONS:")
     print("-h, --help\t\tShow this help message")
-    print("-i, --install\t\tInstall a packet from the remote repository")
-    print("-l, --local-install\tInstall a packet from a file .deb or .rpm")
+    print("-i, --install\t\tInstall a packet from a file .deb or .rpm")
     print("-s, --search\t\tSearch for a packet")
     print("-u, --update\t\tUpdate the local list of available packets in the repo")
 else:
     if sys.argv[1] == '-i' or sys.argv[1] == '--install':
-        find = 0
-        file = open('/var/db/debrpm/packages.txt', 'r')
-        packets = file.readlines()
-        for packet in packets:
-            if packet.find(sys.argv[2]) != -1:
-                find = find + 1
-                packet_name = packet[0:packet.find('[')]
-                packet_description = packet[(packet.find('[')+1):packet.find(']')]
-                packet_url = packet[(packet.find('(')+1):packet.find(')')]
-        if find == 0:
-            print("The packet is not in the repository")
-        elif find == 1:
-            print("Installing:", packet_name)
-            print("Downloading source")
-            source = requests.get(packet_url, allow_redirects=True)
-            source_file = "/var/tmp/debrpm/" + packet_name
-            if packet_url.find('.deb') != -1:
-                source_file = source_file + ".deb"
-            elif packet_url.find('.rpm') != -1:
-                source_file = source_file + ".rpm"
-            open(source_file, 'wb').write(source.content)
-            if packet_url.find('.deb') != -1:
-                os.chdir("/var/tmp/debrpm")
-                command = "sudo ar x " + source_file
-                subprocess.run(command, shell=True)
-                subprocess.run("sudo rm debian-binary control.tar.xz", shell=True)
-                subprocess.run("sudo mv data.tar.xz /", shell=True)
-                os.chdir("/")
-                command = "sudo tar xpvf data.tar.xz >> /var/log/debrpm/" + packet_name + ".deb.log"
-                subprocess.run(command, shell=True)
-                subprocess.run("rm /data.tar.xz", shell=True)
-            elif packet_url.find('.rpm') != -1:
-                os.chdir("/var/tmp/debrpm")
-                command = "rpm2tarxz " + source_file
-                subprocess.run(command, shell=True)
-                command = "rm " + source_file
-                subprocess.run(command, shell=True)
-                command = "mv " + packet_name + ".tar.xz /"
-                subprocess.run(command, shell=True)
-                os.chdir("/")
-                command = "sudo tar xpvf /" + packet_name + ".tar.xz >> /var/log/debrpm/" + packet_name + ".tar.xz.log"
-                subprocess.run(command, shell=True)
-                command= "rm /" + packet_name + ".tar.xz"
-                subprocess.run(command, shell=True)
-        elif find > 1:
-            print("There are multiple packages with this name, please see them with \033[1;31mdebrpm -s", sys.argv[2], "\033[0mand install the correct one")
-    if sys.argv[1] == '-l' or sys.argv[1] == '--local-install':
         file = sys.argv[2]
         if file.find('.deb') != -1:
             print("Installing the file: ", file)
