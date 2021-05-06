@@ -21,7 +21,6 @@ if '-i' in options or '--install' in options:
     else:
         root = '/'
     logfile = '/var/log/debrpm/' + file + '.log'
-    print(logfile)
     open(logfile, 'w').write('Root directory:' + root)
     if file.find('.deb') != -1:
         print("Installing the file: ", file)
