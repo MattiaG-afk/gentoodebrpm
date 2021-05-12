@@ -30,15 +30,15 @@ if '-i' in options or '--install' in options:
     if file.find('.deb') != -1:
         print("Installing the file: ", file)
         subprocess.run("sudo ar x " + file, shell=True)
-        os.remove("debian-binary control.tar.xz")
+        subprocess.run("rm -f debian-binary control.tar.xz", shell=True)
         subprocess.run("sudo mv data.tar.xz %s" % root, shell=True)
         os.chdir(root)
         subprocess.run("sudo tar xpvf data.tar.xz >> " + log_file, shell=True)
-        subprocess.remove("data.tar.xz")
+        subprocess.run("rm -f data.tar.xz", shell=True)
     elif file.find('.rpm') != -1:
         print("Installing the file: ", file)
         subprocess.run("rpm2tarxz " + file, shell=True)
-        os.remove(file, shell=True)
+        subprocess.run("rm -f %s" % file, shell=True)
         subprocess.run("mv " + file.replace(".rpm", ".tar.xz") + " " + root, shell=True)
         os.chdir(root)
         subprocess.run("sudo tar xpvf " + file.replace(".rpm", ".tar.xz") + " >> " + log_file, shell=True)
@@ -54,25 +54,24 @@ elif '-u' in options or '--uninstall' in options:
         packet = os.path.join(log_dir, packet)
     if not packet.endswith('.log'):
         packet += '.log'
-    try:
-        packet_log = open(packet)
-        root = packet_log.readline().split('Root directory:')[1].replace('./','')
-        dir = []
-        if root != '/':
-            for line in packet_log.readlines():
-                remove = root.replace('\n', '') + line.replace('\n', '').replace('./', '/')
-                if os.path.isdir(remove):
-                    dir.append(remove)
-                else:
-                    os.remove(line.replace('\n', ''))
-            dir.sort()
-            dir.reverse()
-            for directory in dir:
-                os.removedirs(directory)
-            os.chdir(log_dir)
-            os.remove(packet_log)
-    except:
-        print('Package not installed')
+    # try:
+    packet_log = open(packet)
+    root = packet_log.readline().split('Root directory:')[1].replace('./','')
+    dir = []
+    if root != '/':
+        for line in packet_log.readlines():
+            remove = root.replace('\n', '') + line.replace('\n', '').replace('./', '/')
+            if os.path.isdir(remove):
+                dir.append(remove)
+            else:
+                subprocess.run('rm -f ' + line.replace('\n', ''), shell=True)
+        dir.sort()
+        dir.reverse()
+        for directory in dir:
+            subprocess.run('rmdir ' + directory, shell=True)
+        subprocess.run("rm -f %s" % os.path.join(log_dir, packet))
+    # except:
+        # print(sys.exc_info())
 elif '-l' in options or '--list' in options:
     index = 0
     for file in os.listdir(log_dir):
