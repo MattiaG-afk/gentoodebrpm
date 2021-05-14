@@ -30,7 +30,8 @@ if '-i' in options or '--install' in options:
     open(log_file, 'w').write('Root directory:' + root)
     if file.find('.deb') != -1:
         print("Installing the file: ", file)
-        subprocess.run("sudo cp %s %s" % (file, tmp_dir), shell=True)
+        subprocess.run("sudo cp %s %s" % (os.path.join(os.curdir, file), os.path.join(tmp_dir, file)), shell=True)
+        os.chdir(tmp_dir)
         subprocess.run("sudo ar x %s" % os.path.join(tmp_dir, file), shell=True)
         subprocess.run("rm -f %s %s" % (os.path.join(tmp_dir, "debian-binary"), os.path.join(tmp_dir, "control.tar.xz")), shell=True)
         subprocess.run("sudo tar xpvf %s >> %s" % (os.path.join(tmp_dir, "data.tar.xz"), os.path.join(log_dir, log_file)), shell=True)
