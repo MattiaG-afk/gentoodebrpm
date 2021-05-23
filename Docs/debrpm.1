@@ -1,0 +1,32 @@
+.\" Manpage for debrpm.
+.\" Contact gasmat04@gmail.com to correct errors or typos.
+.TH man 1 "23 May 2021" "1.0" "debrpm man page"
+.SH NAME
+debrpm \- Installer for .deb and .rpm packet
+.SH SYNOPSIS
+.BR debrpm
+[\fIOPTION\fR] [\fIFILE\fR]
+.SH DESCRIPTION
+An easy to use installer for .deb and .rpm packet on Gentoo, Slackware and other distros.
+.SH OPTIONS
+The debrpm command takes at least one options:
+.TP
+-h or --help: print the help message
+.TP
+-i or --install: installe the given FILE
+.TP
+-u or --uninstall: uninstall the given FILE (if installed)
+.TP
+-l or --list: list the installed packages
+.TP
+You can also add optional options:
+.TP
+-/ or --root: to specify the root directory
+.SH BUGS
+No known bugs.
+.SH WARNING
+Use debrpm only if the package you need is not present in the repositories of the package manager of your GNU/Linux operating system
+Installing a package with debrpm when it has already been installed with the package manager of your GNU/Linux operating system may harm your system
+
+.SH AUTHOR
+Gasparotto Mattia (gasmat04@gmail.com)
