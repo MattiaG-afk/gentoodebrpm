@@ -40,7 +40,7 @@ def installFile(file, root='/'):
     except:
         showerror('Debrpm GUI', 'An error occurred:\n%s' % sys.exc_info)
 
-def uninstallFile(packet, root_dir='/'):
+def uninstallFile(packet):
     try:
         packet = os.path.join(log_dir, packet)
         if not packet.endswith('.log'):
@@ -107,6 +107,6 @@ row.pack(expand=YES, fill=BOTH)
 
 Button(root, text='List', command=listInstalled).pack(side=LEFT, expand=NO, fill=BOTH)
 Button(root, text='Install', command=(lambda: installFile(file.get(), root_dir.get()))).pack(side=RIGHT, fill=BOTH)
-Button(root, text='Uninstall', command=(lambda: uninstallFile(file.get(), root_dir.get()))).pack(side=RIGHT, fill=BOTH)
+Button(root, text='Uninstall', command=(lambda: uninstallFile(file.get()))).pack(side=RIGHT, fill=BOTH)
 
 root.mainloop()
