@@ -14,52 +14,15 @@ def fillEntry(entry, value):
 
 def installFile(file, root='/'):
     try:
-        log_file = os.path.join(log_dir, file + '.log')
-        open(log_file, 'w').write('Root directory:' + root)
-        if file.find('.deb') != -1:
-            print("Installing the file:", file)
-            subprocess.run("sudo cp %s %s" % (os.path.join(os.curdir, file), os.path.join(tmp_dir, file)), shell=True)
-            os.chdir(tmp_dir)
-            subprocess.run("sudo ar x %s" % os.path.join(tmp_dir, file), shell=True)
-            subprocess.run("rm -f %s %s" % (os.path.join(tmp_dir, "debian-binary"), os.path.join(tmp_dir, "control.tar.xz")), shell=True)
-            subprocess.run("sudo tar xpvf %s >> %s" % (os.path.join(tmp_dir, "data.tar.xz"), log_file), shell=True)
-            subprocess.run("rm -f %s" % os.path.join(tmp_dir, "data.tar.xz"), shell=True)
-            subprocess.run("mv %s %s" % (os.path.join(tmp_dir, "*"), root), shell=True)
-            showinfo('Debrpm GUI', 'Package installed successfully')
-        elif file.find('.rpm') != -1:
-            print("Installing the file:", file)
-            subprocess.run("sudo cp %s %s" % (os.path.join(os.curdir, file), os.path.join(tmp_dir, file)), shell=True)
-            os.chdir(tmp_dir)
-            subprocess.run("rpm2tarxz %s" % os.path.join(os.curdir, file), shell=True)
-            subprocess.run("sudo tar xpvf %s >> %s" % (os.path.join(os.curdir, file.replace(".rpm", ".tar.xz")), log_file), shell=True)
-            subprocess.run("rm -f %s %s" %(os.path.join(os.curdir, file), os.path.join(os.curdir, file.replace(".rpm", ".tar.xz"))), shell=True)
-            subprocess.run("mv %s %s" % (os.path.join(tmp_dir, "*"), root), shell=True)
-            showinfo('Debrpm GUI', 'Package installed successfully')
-        else:
-            showerror('Debrpm GUI', 'Unknown file. Currently supported files are: .deb and .rpm')
+        subprocess.run('sudo debrpm -i %s -/ %s' % (file, root), shell=True)
+        showinfo('Debrpm GUI', 'Package installed successfully')
     except:
         showerror('Debrpm GUI', 'An error occurred:\n%s' % sys.exc_info)
 
 def uninstallFile(packet):
     try:
-        packet = os.path.join(log_dir, packet)
-        if not packet.endswith('.log'):
-            packet += '.log'
-        packet_log = open(packet)
-        root = packet_log.readline().split('Root directory:')[1].replace('./','')
-        dir = []
-        if root != '/':
-            for line in packet_log.readlines():
-                remove = root.replace('\n', '') + line.replace('\n', '').replace('./', '/')
-                if os.path.isdir(remove):
-                    dir.append(remove)
-                else:
-                    subprocess.run('rm -f ' + line.replace('\n', ''), shell=True)
-            dir.sort()
-            dir.reverse()
-            for directory in dir:
-                subprocess.run('rmdir ' + directory, shell=True)
-            subprocess.run("rm -f %s" % os.path.join(log_dir, packet), shell=True)
+        print(packet)
+        subprocess.run('sudo debrpm -u %s' % file, shell=True)
         showinfo('Debrpm GUI', 'Package uninstalled successfully')
     except:
         showerror('Debrpm GUI', 'An error occurred: \n%s' % sys.exc_info)
@@ -107,6 +70,6 @@ row.pack(expand=YES, fill=BOTH)
 
 Button(root, text='List', command=listInstalled).pack(side=LEFT, expand=NO, fill=BOTH)
 Button(root, text='Install', command=(lambda: installFile(file.get(), root_dir.get()))).pack(side=RIGHT, fill=BOTH)
-Button(root, text='Uninstall', command=(lambda: uninstallFile(file.get()))).pack(side=RIGHT, fill=BOTH)
+Button(root, text='Uninstall', command=(lambda: uninstallFile(file.get().split('/')[-1]))).pack(side=RIGHT, fill=BOTH)
 
 root.mainloop()
